@@ -54,15 +54,14 @@ var EventHandlers = {
     });
   },
   swipeMove: function (e) {
-    if (!this.state.dragging) {
-      return;
-    }
-    if (this.state.animating) {
-      return;
-    }
     var swipeLeft;
     var curLeft, positionOffset;
     var touchObject = this.state.touchObject;
+    var swipeDirection = this.swipeDirection(touchObject);
+
+    if (!this.state.dragging || this.state.animating || swipeDirection === 'vertical') {
+      return;
+    }
 
     curLeft = getTrackLeft(assign({
       slideIndex: this.state.currentSlide,

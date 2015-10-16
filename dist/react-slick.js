@@ -409,15 +409,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  },
 	  swipeMove: function swipeMove(e) {
-	    if (!this.state.dragging) {
-	      return;
-	    }
-	    if (this.state.animating) {
-	      return;
-	    }
 	    var swipeLeft;
 	    var curLeft, positionOffset;
 	    var touchObject = this.state.touchObject;
+	    var swipeDirection = this.swipeDirection(touchObject);
+
+	    if (!this.state.dragging || this.state.animating || swipeDirection === 'vertical') {
+	      return;
+	    }
 
 	    curLeft = (0, _trackHelper.getTrackLeft)((0, _objectAssign2['default'])({
 	      slideIndex: this.state.currentSlide,
