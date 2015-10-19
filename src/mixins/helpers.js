@@ -251,7 +251,7 @@ var helpers = {
   },
   autoPlay: function () {
     var play = () => {
-      if (this.state.mounted) {
+      if (this.state.mounted && this.props.autoplay) {
         this.slideHandler(this.state.currentSlide + this.props.slidesToScroll);
       }
     };

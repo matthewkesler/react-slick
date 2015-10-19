@@ -935,7 +935,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _this2 = this;
 
 	    var play = function play() {
-	      if (_this2.state.mounted) {
+	      if (_this2.state.mounted && _this2.props.autoplay) {
 	        _this2.slideHandler(_this2.state.currentSlide + _this2.props.slidesToScroll);
 	      }
 	    };
