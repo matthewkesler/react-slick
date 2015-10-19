@@ -718,32 +718,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  },
 	  update: function update(props) {
-	    // This method has mostly same code as initialize method.
-	    // Refactor it
-	    var slideCount = _react2['default'].Children.count(props.children);
-	    var listWidth = this.getWidth(this.refs.list.getDOMNode());
-	    var trackWidth = this.getWidth(this.refs.track.getDOMNode());
-	    var slideWidth = this.getWidth(this.getDOMNode()) / props.slidesToShow;
+	    if (!this.state.animating) {
+	      // This method has mostly same code as initialize method.
+	      // Refactor it
+	      var slideCount = _react2['default'].Children.count(props.children);
+	      var listWidth = this.getWidth(this.refs.list.getDOMNode());
+	      var trackWidth = this.getWidth(this.refs.track.getDOMNode());
+	      var slideWidth = this.getWidth(this.getDOMNode()) / props.slidesToShow;
 
-	    this.setState({
-	      slideCount: slideCount,
-	      slideWidth: slideWidth,
-	      listWidth: listWidth,
-	      trackWidth: trackWidth
-	    }, function () {
+	      this.setState({
+	        slideCount: slideCount,
+	        slideWidth: slideWidth,
+	        listWidth: listWidth,
+	        trackWidth: trackWidth
+	      }, function () {
 
-	      var targetLeft = (0, _trackHelper.getTrackLeft)((0, _objectAssign2['default'])({
-	        slideIndex: this.state.currentSlide,
-	        trackRef: this.refs.track
-	      }, props, this.state));
-	      // getCSS function needs previously set state
-	      var trackStyle = (0, _trackHelper.getTrackCSS)((0, _objectAssign2['default'])({ left: targetLeft }, props, this.state));
+	        var targetLeft = (0, _trackHelper.getTrackLeft)((0, _objectAssign2['default'])({
+	          slideIndex: this.state.currentSlide,
+	          trackRef: this.refs.track
+	        }, props, this.state));
+	        // getCSS function needs previously set state
+	        var trackStyle = (0, _trackHelper.getTrackCSS)((0, _objectAssign2['default'])({ left: targetLeft }, props, this.state));
 
-	      this.setState({ trackStyle: trackStyle });
+	        this.setState({ trackStyle: trackStyle });
 
-	      // Animate slider to initial slide passed as props
-	      this.slideHandler(props.initialSlide);
-	    });
+	        // Animate slider to initial slide passed as props
+	        this.slideHandler(props.initialSlide);
+	      });
+	    }
 	  },
 	  getWidth: function getWidth(elem) {
 	    return elem.getBoundingClientRect().width || elem.offsetWidth;
