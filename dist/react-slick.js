@@ -76,11 +76,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
-	var _json2mq = __webpack_require__(25);
+	var _json2mq = __webpack_require__(27);
 
 	var _json2mq2 = _interopRequireDefault(_json2mq);
 
-	var _reactResponsiveMixin = __webpack_require__(27);
+	var _reactResponsiveMixin = __webpack_require__(29);
 
 	var _reactResponsiveMixin2 = _interopRequireDefault(_reactResponsiveMixin);
 
@@ -206,9 +206,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _track = __webpack_require__(13);
 
-	var _dots = __webpack_require__(23);
+	var _dots = __webpack_require__(25);
 
-	var _arrows = __webpack_require__(24);
+	var _arrows = __webpack_require__(26);
 
 	var InnerSlider = _react2['default'].createClass({
 	  displayName: 'InnerSlider',
@@ -958,7 +958,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Copyright 2013-2015, Facebook, Inc.
+	 * Copyright 2013-2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
 	 * This source code is licensed under the BSD-style license found in the
@@ -968,7 +968,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @providesModule ReactTransitionEvents
 	 */
 
-	'use strict';
+	"use strict";
 
 	var ExecutionEnvironment = __webpack_require__(9);
 
@@ -1043,23 +1043,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	var ReactTransitionEvents = {
-	  addEndEventListener: function (node, eventListener) {
+	  addEndEventListener: function(node, eventListener) {
 	    if (endEvents.length === 0) {
 	      // If CSS transitions are not supported, trigger an "end animation"
 	      // event immediately.
 	      window.setTimeout(eventListener, 0);
 	      return;
 	    }
-	    endEvents.forEach(function (endEvent) {
+	    endEvents.forEach(function(endEvent) {
 	      addEventListener(node, endEvent, eventListener);
 	    });
 	  },
 
-	  removeEndEventListener: function (node, eventListener) {
+	  removeEndEventListener: function(node, eventListener) {
 	    if (endEvents.length === 0) {
 	      return;
 	    }
-	    endEvents.forEach(function (endEvent) {
+	    endEvents.forEach(function(endEvent) {
 	      removeEventListener(node, endEvent, eventListener);
 	    });
 	  }
@@ -1067,12 +1067,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = ReactTransitionEvents;
 
+
 /***/ },
 /* 9 */
 /***/ function(module, exports) {
 
 	/**
-	 * Copyright 2013-2015, Facebook, Inc.
+	 * Copyright 2013-2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
 	 * This source code is licensed under the BSD-style license found in the
@@ -1082,9 +1083,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @providesModule ExecutionEnvironment
 	 */
 
-	'use strict';
+	/*jslint evil: true */
 
-	var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+	"use strict";
+
+	var canUseDOM = !!(
+	  typeof window !== 'undefined' &&
+	  window.document &&
+	  window.document.createElement
+	);
 
 	/**
 	 * Simple, lightweight module assisting with the detection and context of
@@ -1098,7 +1105,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  canUseWorkers: typeof Worker !== 'undefined',
 
-	  canUseEventListeners: canUseDOM && !!(window.addEventListener || window.attachEvent),
+	  canUseEventListeners:
+	    canUseDOM && !!(window.addEventListener || window.attachEvent),
 
 	  canUseViewport: canUseDOM && !!window.screen,
 
@@ -1107,6 +1115,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = ExecutionEnvironment;
+
 
 /***/ },
 /* 10 */
@@ -1414,66 +1423,68 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Copyright 2013-2015, Facebook, Inc.
+	 * Copyright 2013-2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
 	 * This source code is licensed under the BSD-style license found in the
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
-	 * @typechecks static-only
+	 * @typechecks
 	 * @providesModule cloneWithProps
 	 */
 
-	'use strict';
+	"use strict";
 
 	var ReactElement = __webpack_require__(15);
-	var ReactPropTransferer = __webpack_require__(18);
+	var ReactPropTransferer = __webpack_require__(21);
 
-	var keyOf = __webpack_require__(21);
-	var warning = __webpack_require__(22);
+	var keyOf = __webpack_require__(24);
+	var warning = __webpack_require__(19);
 
-	var CHILDREN_PROP = keyOf({ children: null });
-
-	var didDeprecatedWarn = false;
+	var CHILDREN_PROP = keyOf({children: null});
 
 	/**
 	 * Sometimes you want to change the props of a child passed to you. Usually
 	 * this is to add a CSS class.
 	 *
-	 * @param {ReactElement} child child element you'd like to clone
-	 * @param {object} props props you'd like to modify. className and style will be
-	 * merged automatically.
-	 * @return {ReactElement} a clone of child with props merged in.
-	 * @deprecated
+	 * @param {object} child child component you'd like to clone
+	 * @param {object} props props you'd like to modify. They will be merged
+	 * as if you used `transferPropsTo()`.
+	 * @return {object} a clone of child with props merged in.
 	 */
 	function cloneWithProps(child, props) {
-	  if ((undefined) !== 'production') {
-	    (undefined) !== 'production' ? warning(didDeprecatedWarn, 'cloneWithProps(...) is deprecated. ' + 'Please use React.cloneElement instead.') : undefined;
-	    didDeprecatedWarn = true;
-	    (undefined) !== 'production' ? warning(!child.ref, 'You are calling cloneWithProps() on a child with a ref. This is ' + 'dangerous because you\'re creating a new child which will not be ' + 'added as a ref to its parent.') : undefined;
+	  if ("production" !== (undefined)) {
+	    ("production" !== (undefined) ? warning(
+	      !child.ref,
+	      'You are calling cloneWithProps() on a child with a ref. This is ' +
+	      'dangerous because you\'re creating a new child which will not be ' +
+	      'added as a ref to its parent.'
+	    ) : null);
 	  }
 
 	  var newProps = ReactPropTransferer.mergeProps(props, child.props);
 
 	  // Use `child.props.children` if it is provided.
-	  if (!newProps.hasOwnProperty(CHILDREN_PROP) && child.props.hasOwnProperty(CHILDREN_PROP)) {
+	  if (!newProps.hasOwnProperty(CHILDREN_PROP) &&
+	      child.props.hasOwnProperty(CHILDREN_PROP)) {
 	    newProps.children = child.props.children;
 	  }
 
-	  // The current API doesn't retain _owner, which is why this
+	  // The current API doesn't retain _owner and _context, which is why this
 	  // doesn't use ReactElement.cloneAndReplaceProps.
 	  return ReactElement.createElement(child.type, newProps);
 	}
 
 	module.exports = cloneWithProps;
 
+
 /***/ },
 /* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Copyright 2014-2015, Facebook, Inc.
+	 * Copyright 2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
 	 * This source code is licensed under the BSD-style license found in the
@@ -1483,28 +1494,70 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @providesModule ReactElement
 	 */
 
-	'use strict';
+	"use strict";
 
-	var ReactCurrentOwner = __webpack_require__(16);
+	var ReactContext = __webpack_require__(16);
+	var ReactCurrentOwner = __webpack_require__(18);
 
-	var assign = __webpack_require__(17);
-
-	// The Symbol used to tag the ReactElement type. If there is no native Symbol
-	// nor polyfill, then a plain number is used for performance.
-	var TYPE_SYMBOL = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.element') || 0xeac7;
+	var warning = __webpack_require__(19);
 
 	var RESERVED_PROPS = {
 	  key: true,
-	  ref: true,
-	  __self: true,
-	  __source: true
+	  ref: true
 	};
 
-	var canDefineProperty = false;
-	if ((undefined) !== 'production') {
+	/**
+	 * Warn for mutations.
+	 *
+	 * @internal
+	 * @param {object} object
+	 * @param {string} key
+	 */
+	function defineWarningProperty(object, key) {
+	  Object.defineProperty(object, key, {
+
+	    configurable: false,
+	    enumerable: true,
+
+	    get: function() {
+	      if (!this._store) {
+	        return null;
+	      }
+	      return this._store[key];
+	    },
+
+	    set: function(value) {
+	      ("production" !== (undefined) ? warning(
+	        false,
+	        'Don\'t set the ' + key + ' property of the component. ' +
+	        'Mutate the existing props object instead.'
+	      ) : null);
+	      this._store[key] = value;
+	    }
+
+	  });
+	}
+
+	/**
+	 * This is updated to true if the membrane is successfully created.
+	 */
+	var useMutationMembrane = false;
+
+	/**
+	 * Warn for mutations.
+	 *
+	 * @internal
+	 * @param {object} element
+	 */
+	function defineMutationMembrane(prototype) {
 	  try {
-	    Object.defineProperty({}, 'x', {});
-	    canDefineProperty = true;
+	    var pseudoFrozenProperties = {
+	      props: true
+	    };
+	    for (var key in pseudoFrozenProperties) {
+	      defineWarningProperty(prototype, key);
+	    }
+	    useMutationMembrane = true;
 	  } catch (x) {
 	    // IE will fail on defineProperty
 	  }
@@ -1515,80 +1568,54 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * work with a dynamic instanceof check. Nothing should live on this prototype.
 	 *
 	 * @param {*} type
-	 * @param {*} key
 	 * @param {string|object} ref
-	 * @param {*} self A *temporary* helper to detect places where `this` is
-	 * different from the `owner` when React.createElement is called, so that we
-	 * can warn. We want to get rid of owner and replace string `ref`s with arrow
-	 * functions, and as long as `this` and owner are the same, there will be no
-	 * change in behavior.
-	 * @param {*} source An annotation object (added by a transpiler or otherwise)
-	 * indicating filename, line number, and/or other information.
-	 * @param {*} owner
+	 * @param {*} key
 	 * @param {*} props
 	 * @internal
 	 */
-	var ReactElement = function (type, key, ref, self, source, owner, props) {
-	  var element = {
-	    // This tag allow us to uniquely identify this as a React Element
-	    $$typeof: TYPE_SYMBOL,
+	var ReactElement = function(type, key, ref, owner, context, props) {
+	  // Built-in properties that belong on the element
+	  this.type = type;
+	  this.key = key;
+	  this.ref = ref;
 
-	    // Built-in properties that belong on the element
-	    type: type,
-	    key: key,
-	    ref: ref,
-	    props: props,
+	  // Record the component responsible for creating this element.
+	  this._owner = owner;
 
-	    // Record the component responsible for creating this element.
-	    _owner: owner
-	  };
+	  // TODO: Deprecate withContext, and then the context becomes accessible
+	  // through the owner.
+	  this._context = context;
 
-	  if ((undefined) !== 'production') {
-	    // The validation flag is currently mutative. We put it on
+	  if ("production" !== (undefined)) {
+	    // The validation flag and props are currently mutative. We put them on
 	    // an external backing store so that we can freeze the whole object.
 	    // This can be replaced with a WeakMap once they are implemented in
 	    // commonly used development environments.
-	    element._store = {};
+	    this._store = { validated: false, props: props };
 
-	    // To make comparing ReactElements easier for testing purposes, we make
-	    // the validation flag non-enumerable (where possible, which should
-	    // include every environment we run tests in), so the test framework
-	    // ignores it.
-	    if (canDefineProperty) {
-	      Object.defineProperty(element._store, 'validated', {
-	        configurable: false,
-	        enumerable: false,
-	        writable: true,
-	        value: false
-	      });
-	      // self and source are DEV only properties.
-	      Object.defineProperty(element, '_self', {
-	        configurable: false,
-	        enumerable: false,
-	        writable: false,
-	        value: self
-	      });
-	      // Two elements created in two different places should be considered
-	      // equal for testing purposes and therefore we hide it from enumeration.
-	      Object.defineProperty(element, '_source', {
-	        configurable: false,
-	        enumerable: false,
-	        writable: false,
-	        value: source
-	      });
-	    } else {
-	      element._store.validated = false;
-	      element._self = self;
-	      element._source = source;
+	    // We're not allowed to set props directly on the object so we early
+	    // return and rely on the prototype membrane to forward to the backing
+	    // store.
+	    if (useMutationMembrane) {
+	      Object.freeze(this);
+	      return;
 	    }
-	    Object.freeze(element.props);
-	    Object.freeze(element);
 	  }
 
-	  return element;
+	  this.props = props;
 	};
 
-	ReactElement.createElement = function (type, config, children) {
+	// We intentionally don't expose the function on the constructor property.
+	// ReactElement should be indistinguishable from a plain object.
+	ReactElement.prototype = {
+	  _isReactElement: true
+	};
+
+	if ("production" !== (undefined)) {
+	  defineMutationMembrane(ReactElement.prototype);
+	}
+
+	ReactElement.createElement = function(type, config, children) {
 	  var propName;
 
 	  // Reserved names are extracted
@@ -1596,17 +1623,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  var key = null;
 	  var ref = null;
-	  var self = null;
-	  var source = null;
 
 	  if (config != null) {
 	    ref = config.ref === undefined ? null : config.ref;
-	    key = config.key === undefined ? null : '' + config.key;
-	    self = config.__self === undefined ? null : config.__self;
-	    source = config.__source === undefined ? null : config.__source;
+	    if ("production" !== (undefined)) {
+	      ("production" !== (undefined) ? warning(
+	        config.key !== null,
+	        'createElement(...): Encountered component with a `key` of null. In ' +
+	        'a future version, this will be treated as equivalent to the string ' +
+	        '\'null\'; instead, provide an explicit key or use undefined.'
+	      ) : null);
+	    }
+	    // TODO: Change this back to `config.key === undefined`
+	    key = config.key == null ? null : '' + config.key;
 	    // Remaining properties are added to a new props object
 	    for (propName in config) {
-	      if (config.hasOwnProperty(propName) && !RESERVED_PROPS.hasOwnProperty(propName)) {
+	      if (config.hasOwnProperty(propName) &&
+	          !RESERVED_PROPS.hasOwnProperty(propName)) {
 	        props[propName] = config[propName];
 	      }
 	    }
@@ -1635,87 +1668,41 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
-	  return ReactElement(type, key, ref, self, source, ReactCurrentOwner.current, props);
+	  return new ReactElement(
+	    type,
+	    key,
+	    ref,
+	    ReactCurrentOwner.current,
+	    ReactContext.current,
+	    props
+	  );
 	};
 
-	ReactElement.createFactory = function (type) {
+	ReactElement.createFactory = function(type) {
 	  var factory = ReactElement.createElement.bind(null, type);
 	  // Expose the type on the factory and the prototype so that it can be
-	  // easily accessed on elements. E.g. `<Foo />.type === Foo`.
+	  // easily accessed on elements. E.g. <Foo />.type === Foo.type.
 	  // This should not be named `constructor` since this may not be the function
 	  // that created the element, and it may not even be a constructor.
-	  // Legacy hook TODO: Warn if this is accessed
 	  factory.type = type;
 	  return factory;
 	};
 
-	ReactElement.cloneAndReplaceKey = function (oldElement, newKey) {
-	  var newElement = ReactElement(oldElement.type, newKey, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, oldElement.props);
+	ReactElement.cloneAndReplaceProps = function(oldElement, newProps) {
+	  var newElement = new ReactElement(
+	    oldElement.type,
+	    oldElement.key,
+	    oldElement.ref,
+	    oldElement._owner,
+	    oldElement._context,
+	    newProps
+	  );
 
-	  return newElement;
-	};
-
-	ReactElement.cloneAndReplaceProps = function (oldElement, newProps) {
-	  var newElement = ReactElement(oldElement.type, oldElement.key, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, newProps);
-
-	  if ((undefined) !== 'production') {
+	  if ("production" !== (undefined)) {
 	    // If the key on the original is valid, then the clone is valid
 	    newElement._store.validated = oldElement._store.validated;
 	  }
-
 	  return newElement;
-	};
-
-	ReactElement.cloneElement = function (element, config, children) {
-	  var propName;
-
-	  // Original props are copied
-	  var props = assign({}, element.props);
-
-	  // Reserved names are extracted
-	  var key = element.key;
-	  var ref = element.ref;
-	  // Self is preserved since the owner is preserved.
-	  var self = element._self;
-	  // Source is preserved since cloneElement is unlikely to be targeted by a
-	  // transpiler, and the original source is probably a better indicator of the
-	  // true owner.
-	  var source = element._source;
-
-	  // Owner will be preserved, unless ref is overridden
-	  var owner = element._owner;
-
-	  if (config != null) {
-	    if (config.ref !== undefined) {
-	      // Silently steal the ref from the parent.
-	      ref = config.ref;
-	      owner = ReactCurrentOwner.current;
-	    }
-	    if (config.key !== undefined) {
-	      key = '' + config.key;
-	    }
-	    // Remaining properties override existing props
-	    for (propName in config) {
-	      if (config.hasOwnProperty(propName) && !RESERVED_PROPS.hasOwnProperty(propName)) {
-	        props[propName] = config[propName];
-	      }
-	    }
-	  }
-
-	  // Children can be more than one argument, and those are transferred onto
-	  // the newly allocated props object.
-	  var childrenLength = arguments.length - 2;
-	  if (childrenLength === 1) {
-	    props.children = children;
-	  } else if (childrenLength > 1) {
-	    var childArray = Array(childrenLength);
-	    for (var i = 0; i < childrenLength; i++) {
-	      childArray[i] = arguments[i + 2];
-	    }
-	    props.children = childArray;
-	  }
-
-	  return ReactElement(element.type, key, ref, self, source, owner, props);
 	};
 
 	/**
@@ -1723,53 +1710,95 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return {boolean} True if `object` is a valid component.
 	 * @final
 	 */
-	ReactElement.isValidElement = function (object) {
-	  return typeof object === 'object' && object !== null && object.$$typeof === TYPE_SYMBOL;
+	ReactElement.isValidElement = function(object) {
+	  // ReactTestUtils is often used outside of beforeEach where as React is
+	  // within it. This leads to two different instances of React on the same
+	  // page. To identify a element from a different React instance we use
+	  // a flag instead of an instanceof check.
+	  var isElement = !!(object && object._isReactElement);
+	  // if (isElement && !(object instanceof ReactElement)) {
+	  // This is an indicator that you're using multiple versions of React at the
+	  // same time. This will screw with ownership and stuff. Fix it, please.
+	  // TODO: We could possibly warn here.
+	  // }
+	  return isElement;
 	};
 
 	module.exports = ReactElement;
 
+
 /***/ },
 /* 16 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Copyright 2013-2015, Facebook, Inc.
+	 * Copyright 2013-2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
 	 * This source code is licensed under the BSD-style license found in the
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
-	 * @providesModule ReactCurrentOwner
+	 * @providesModule ReactContext
 	 */
 
-	'use strict';
+	"use strict";
+
+	var assign = __webpack_require__(17);
 
 	/**
-	 * Keeps track of the current owner.
+	 * Keeps track of the current context.
 	 *
-	 * The current owner is the component who should own any components that are
-	 * currently being constructed.
+	 * The context is automatically passed down the component ownership hierarchy
+	 * and is accessible via `this.context` on ReactCompositeComponents.
 	 */
-	var ReactCurrentOwner = {
+	var ReactContext = {
 
 	  /**
 	   * @internal
-	   * @type {ReactComponent}
+	   * @type {object}
 	   */
-	  current: null
+	  current: {},
+
+	  /**
+	   * Temporarily extends the current context while executing scopedCallback.
+	   *
+	   * A typical use case might look like
+	   *
+	   *  render: function() {
+	   *    var children = ReactContext.withContext({foo: 'foo'}, () => (
+	   *
+	   *    ));
+	   *    return <div>{children}</div>;
+	   *  }
+	   *
+	   * @param {object} newContext New context to merge into the existing context
+	   * @param {function} scopedCallback Callback to run with the new context
+	   * @return {ReactComponent|array<ReactComponent>}
+	   */
+	  withContext: function(newContext, scopedCallback) {
+	    var result;
+	    var previousContext = ReactContext.current;
+	    ReactContext.current = assign({}, previousContext, newContext);
+	    try {
+	      result = scopedCallback();
+	    } finally {
+	      ReactContext.current = previousContext;
+	    }
+	    return result;
+	  }
 
 	};
 
-	module.exports = ReactCurrentOwner;
+	module.exports = ReactContext;
+
 
 /***/ },
 /* 17 */
 /***/ function(module, exports) {
 
 	/**
-	 * Copyright 2014-2015, Facebook, Inc.
+	 * Copyright 2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
 	 * This source code is licensed under the BSD-style license found in the
@@ -1780,8 +1809,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign
-
-	'use strict';
 
 	function assign(target, sources) {
 	  if (target == null) {
@@ -1812,16 +1839,140 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  return to;
-	}
+	};
 
 	module.exports = assign;
 
+
 /***/ },
 /* 18 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactCurrentOwner
+	 */
+
+	"use strict";
+
+	/**
+	 * Keeps track of the current owner.
+	 *
+	 * The current owner is the component who should own any components that are
+	 * currently being constructed.
+	 *
+	 * The depth indicate how many composite components are above this render level.
+	 */
+	var ReactCurrentOwner = {
+
+	  /**
+	   * @internal
+	   * @type {ReactComponent}
+	   */
+	  current: null
+
+	};
+
+	module.exports = ReactCurrentOwner;
+
+
+/***/ },
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Copyright 2013-2015, Facebook, Inc.
+	 * Copyright 2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule warning
+	 */
+
+	"use strict";
+
+	var emptyFunction = __webpack_require__(20);
+
+	/**
+	 * Similar to invariant but only logs a warning if the condition is not met.
+	 * This can be used to log issues in development environments in critical
+	 * paths. Removing the logging code for production environments will keep the
+	 * same logic and follow the same code paths.
+	 */
+
+	var warning = emptyFunction;
+
+	if ("production" !== (undefined)) {
+	  warning = function(condition, format ) {for (var args=[],$__0=2,$__1=arguments.length;$__0<$__1;$__0++) args.push(arguments[$__0]);
+	    if (format === undefined) {
+	      throw new Error(
+	        '`warning(condition, format, ...args)` requires a warning ' +
+	        'message argument'
+	      );
+	    }
+
+	    if (!condition) {
+	      var argIndex = 0;
+	      console.warn('Warning: ' + format.replace(/%s/g, function()  {return args[argIndex++];}));
+	    }
+	  };
+	}
+
+	module.exports = warning;
+
+
+/***/ },
+/* 20 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule emptyFunction
+	 */
+
+	function makeEmptyFunction(arg) {
+	  return function() {
+	    return arg;
+	  };
+	}
+
+	/**
+	 * This function accepts and discards inputs; it has no side effects. This is
+	 * primarily useful idiomatically for overridable function endpoints which
+	 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+	 */
+	function emptyFunction() {}
+
+	emptyFunction.thatReturns = makeEmptyFunction;
+	emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
+	emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
+	emptyFunction.thatReturnsNull = makeEmptyFunction(null);
+	emptyFunction.thatReturnsThis = function() { return this; };
+	emptyFunction.thatReturnsArgument = function(arg) { return arg; };
+
+	module.exports = emptyFunction;
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
 	 * This source code is licensed under the BSD-style license found in the
@@ -1831,11 +1982,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @providesModule ReactPropTransferer
 	 */
 
-	'use strict';
+	"use strict";
 
 	var assign = __webpack_require__(17);
-	var emptyFunction = __webpack_require__(19);
-	var joinClasses = __webpack_require__(20);
+	var emptyFunction = __webpack_require__(20);
+	var invariant = __webpack_require__(22);
+	var joinClasses = __webpack_require__(23);
+	var warning = __webpack_require__(19);
+
+	var didWarn = false;
 
 	/**
 	 * Creates a transfer strategy that will merge prop values using the supplied
@@ -1845,7 +2000,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return {function}
 	 */
 	function createTransferStrategy(mergeStrategy) {
-	  return function (props, key, value) {
+	  return function(props, key, value) {
 	    if (!props.hasOwnProperty(key)) {
 	      props[key] = value;
 	    } else {
@@ -1854,7 +2009,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	}
 
-	var transferStrategyMerge = createTransferStrategy(function (a, b) {
+	var transferStrategyMerge = createTransferStrategy(function(a, b) {
 	  // `merge` overrides the first object's (`props[key]` above) keys using the
 	  // second object's (`value`) keys. An object's style's existing `propA` would
 	  // get overridden. Flip the order here.
@@ -1914,6 +2069,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	var ReactPropTransferer = {
 
+	  TransferStrategies: TransferStrategies,
+
 	  /**
 	   * Merge two props objects using TransferStrategies.
 	   *
@@ -1921,63 +2078,129 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @param {object} newProps new props to merge in
 	   * @return {object} a new object containing both sets of props merged.
 	   */
-	  mergeProps: function (oldProps, newProps) {
+	  mergeProps: function(oldProps, newProps) {
 	    return transferInto(assign({}, oldProps), newProps);
-	  }
+	  },
 
+	  /**
+	   * @lends {ReactPropTransferer.prototype}
+	   */
+	  Mixin: {
+
+	    /**
+	     * Transfer props from this component to a target component.
+	     *
+	     * Props that do not have an explicit transfer strategy will be transferred
+	     * only if the target component does not already have the prop set.
+	     *
+	     * This is usually used to pass down props to a returned root component.
+	     *
+	     * @param {ReactElement} element Component receiving the properties.
+	     * @return {ReactElement} The supplied `component`.
+	     * @final
+	     * @protected
+	     */
+	    transferPropsTo: function(element) {
+	      ("production" !== (undefined) ? invariant(
+	        element._owner === this,
+	        '%s: You can\'t call transferPropsTo() on a component that you ' +
+	        'don\'t own, %s. This usually means you are calling ' +
+	        'transferPropsTo() on a component passed in as props or children.',
+	        this.constructor.displayName,
+	        typeof element.type === 'string' ?
+	        element.type :
+	        element.type.displayName
+	      ) : invariant(element._owner === this));
+
+	      if ("production" !== (undefined)) {
+	        if (!didWarn) {
+	          didWarn = true;
+	          ("production" !== (undefined) ? warning(
+	            false,
+	            'transferPropsTo is deprecated. ' +
+	            'See http://fb.me/react-transferpropsto for more information.'
+	          ) : null);
+	        }
+	      }
+
+	      // Because elements are immutable we have to merge into the existing
+	      // props object rather than clone it.
+	      transferInto(element.props, this.props);
+
+	      return element;
+	    }
+
+	  }
 	};
 
 	module.exports = ReactPropTransferer;
 
+
 /***/ },
-/* 19 */
-/***/ function(module, exports) {
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Copyright 2013-2015, Facebook, Inc.
+	 * Copyright 2013-2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
 	 * This source code is licensed under the BSD-style license found in the
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
-	 * @providesModule emptyFunction
+	 * @providesModule invariant
 	 */
 
 	"use strict";
 
-	function makeEmptyFunction(arg) {
-	  return function () {
-	    return arg;
-	  };
-	}
-
 	/**
-	 * This function accepts and discards inputs; it has no side effects. This is
-	 * primarily useful idiomatically for overridable function endpoints which
-	 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+	 * Use invariant() to assert state which your program assumes to be true.
+	 *
+	 * Provide sprintf-style format (only %s is supported) and arguments
+	 * to provide information about what broke and what you were
+	 * expecting.
+	 *
+	 * The invariant message will be stripped in production, but the invariant
+	 * will remain to ensure logic does not differ in production.
 	 */
-	function emptyFunction() {}
 
-	emptyFunction.thatReturns = makeEmptyFunction;
-	emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-	emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-	emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-	emptyFunction.thatReturnsThis = function () {
-	  return this;
-	};
-	emptyFunction.thatReturnsArgument = function (arg) {
-	  return arg;
+	var invariant = function(condition, format, a, b, c, d, e, f) {
+	  if ("production" !== (undefined)) {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
+	    }
+	  }
+
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error(
+	        'Minified exception occurred; use the non-minified dev environment ' +
+	        'for the full error message and additional helpful warnings.'
+	      );
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error(
+	        'Invariant Violation: ' +
+	        format.replace(/%s/g, function() { return args[argIndex++]; })
+	      );
+	    }
+
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
+	  }
 	};
 
-	module.exports = emptyFunction;
+	module.exports = invariant;
+
 
 /***/ },
-/* 20 */
+/* 23 */
 /***/ function(module, exports) {
 
 	/**
-	 * Copyright 2013-2015, Facebook, Inc.
+	 * Copyright 2013-2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
 	 * This source code is licensed under the BSD-style license found in the
@@ -1988,16 +2211,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @typechecks static-only
 	 */
 
-	'use strict';
+	"use strict";
 
 	/**
 	 * Combines multiple className strings into one.
 	 * http://jsperf.com/joinclasses-args-vs-array
 	 *
-	 * @param {...?string} className
+	 * @param {...?string} classes
 	 * @return {string}
 	 */
-	function joinClasses(className /*, ... */) {
+	function joinClasses(className/*, ... */) {
 	  if (!className) {
 	    className = '';
 	  }
@@ -2016,12 +2239,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = joinClasses;
 
+
 /***/ },
-/* 21 */
+/* 24 */
 /***/ function(module, exports) {
 
 	/**
-	 * Copyright 2013-2015, Facebook, Inc.
+	 * Copyright 2013-2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
 	 * This source code is licensed under the BSD-style license found in the
@@ -2033,7 +2257,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * Allows extraction of a minified key. Let's the build system minify keys
-	 * without losing the ability to dynamically use key strings as values
+	 * without loosing the ability to dynamically use key strings as values
 	 * themselves. Pass in an object with a single key/val pair and it will return
 	 * you the string key of that single record. Suppose you want to grab the
 	 * value for a key 'className' inside of an object. Key/val minification may
@@ -2041,9 +2265,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * 'xa12' in that case. Resolve keys you want to use once at startup time, then
 	 * reuse those resolutions.
 	 */
-	"use strict";
-
-	var keyOf = function (oneKeyObj) {
+	var keyOf = function(oneKeyObj) {
 	  var key;
 	  for (key in oneKeyObj) {
 	    if (!oneKeyObj.hasOwnProperty(key)) {
@@ -2054,72 +2276,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return null;
 	};
 
+
 	module.exports = keyOf;
 
-/***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2014-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule warning
-	 */
-
-	"use strict";
-
-	var emptyFunction = __webpack_require__(19);
-
-	/**
-	 * Similar to invariant but only logs a warning if the condition is not met.
-	 * This can be used to log issues in development environments in critical
-	 * paths. Removing the logging code for production environments will keep the
-	 * same logic and follow the same code paths.
-	 */
-
-	var warning = emptyFunction;
-
-	if ((undefined) !== 'production') {
-	  warning = function (condition, format) {
-	    for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-	      args[_key - 2] = arguments[_key];
-	    }
-
-	    if (format === undefined) {
-	      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-	    }
-
-	    if (format.indexOf('Failed Composite propType: ') === 0) {
-	      return; // Ignore CompositeComponent proptype check.
-	    }
-
-	    if (!condition) {
-	      var argIndex = 0;
-	      var message = 'Warning: ' + format.replace(/%s/g, function () {
-	        return args[argIndex++];
-	      });
-	      if (typeof console !== 'undefined') {
-	        console.error(message);
-	      }
-	      try {
-	        // --- Welcome to debugging React ---
-	        // This error was thrown as a convenience so that you can use this stack
-	        // to find the callsite that caused this warning to fire.
-	        throw new Error(message);
-	      } catch (x) {}
-	    }
-	  };
-	}
-
-	module.exports = warning;
 
 /***/ },
-/* 23 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2198,7 +2360,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.Dots = Dots;
 
 /***/ },
-/* 24 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2315,10 +2477,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.NextArrow = NextArrow;
 
 /***/ },
-/* 25 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var camel2hyphen = __webpack_require__(26);
+	var camel2hyphen = __webpack_require__(28);
 
 	var isDimension = function (feature) {
 	  var re = /[height|width]$/;
@@ -2371,7 +2533,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = json2mq;
 
 /***/ },
-/* 26 */
+/* 28 */
 /***/ function(module, exports) {
 
 	var camel2hyphen = function (str) {
@@ -2385,12 +2547,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = camel2hyphen;
 
 /***/ },
-/* 27 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var canUseDOM = __webpack_require__(28);
-	var enquire = canUseDOM && __webpack_require__(29);
-	var json2mq = __webpack_require__(25);
+	var canUseDOM = __webpack_require__(30);
+	var enquire = canUseDOM && __webpack_require__(31);
+	var json2mq = __webpack_require__(27);
 
 	var ResponsiveMixin = {
 	  media: function (query, handler) {
@@ -2420,7 +2582,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ResponsiveMixin;
 
 /***/ },
-/* 28 */
+/* 30 */
 /***/ function(module, exports) {
 
 	var canUseDOM = !!(
@@ -2432,7 +2594,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = canUseDOM;
 
 /***/ },
-/* 29 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
