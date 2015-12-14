@@ -259,7 +259,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.adaptHeight();
 	  },
 	  onWindowResized: function onWindowResized() {
-	    this.update(this.props);
+	    this.update(this.props, true);
 	  },
 	  render: function render() {
 	    var className = (0, _classnames2['default'])('slick-initialized', 'slick-slider', this.props.className);
@@ -717,7 +717,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.autoPlay(); // once we're set up, trigger the initial autoplay.
 	    });
 	  },
-	  update: function update(props) {
+	  update: function update(props, resizeEvent) {
 	    if (!this.state.animating) {
 	      // This method has mostly same code as initialize method.
 	      // Refactor it
@@ -743,7 +743,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.setState({ trackStyle: trackStyle });
 
 	        // Animate slider to initial slide passed as props
-	        this.slideHandler(props.initialSlide);
+	        if (!resizeEvent) {
+	          this.slideHandler(props.initialSlide);
+	        }
 	      });
 	    }
 	  },

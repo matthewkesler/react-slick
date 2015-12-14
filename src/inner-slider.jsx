@@ -58,7 +58,7 @@ export var InnerSlider = React.createClass({
     this.adaptHeight();
   },
   onWindowResized: function () {
-    this.update(this.props);
+    this.update(this.props, true);
   },
   render: function () {
     var className = classnames('slick-initialized', 'slick-slider', this.props.className);

@@ -35,7 +35,7 @@ var helpers = {
       this.autoPlay(); // once we're set up, trigger the initial autoplay.
     });
   },
-  update: function (props) {
+  update: function (props, resizeEvent) {
   	if(!this.state.animating) {
 	    // This method has mostly same code as initialize method.
 	    // Refactor it 
@@ -61,7 +61,9 @@ var helpers = {
 	      this.setState({trackStyle: trackStyle});
 
 	      // Animate slider to initial slide passed as props 
-	      this.slideHandler(props.initialSlide);
+	      if(!resizeEvent) {
+	      	this.slideHandler(props.initialSlide);
+	      }
 	    });
   }
   },
