@@ -1195,6 +1195,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    infinite: true,
 	    initialSlide: 0,
 	    lazyLoad: false,
+	    preload: 1,
 	    responsive: null,
 	    rtl: false,
 	    slide: 'div',
