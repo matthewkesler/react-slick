@@ -227,19 +227,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.setState({
 	      mounted: true
 	    });
-	    var lazyLoadedList = [],
-	        preload = this.props.slidesToShow > this.props.preload ? this.props.slidesToShow : this.props.preload;
-
-	    // forward
+	    var lazyLoadedList = [];
 	    for (var i = 0; i < this.props.children.length; i++) {
-	      if (i >= this.state.currentSlide && i < this.state.currentSlide + preload) {
+	      if (i >= this.props.initialSlide && i < this.props.initialSlide + this.props.slidesToShow) {
 	        lazyLoadedList.push(i);
 	      }
 	    }
-
-	    // backward
-	    var previous = this.state.currentSlide === 0 ? this.props.children.length - 1 : this.state.currentSlide - 1;
-	    lazyLoadedList.push(previous);
 
 	    if (this.props.lazyLoad && this.state.lazyLoadedList.length === 0) {
 	      this.setState({
