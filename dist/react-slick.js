@@ -228,11 +228,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	      mounted: true
 	    });
 	    var lazyLoadedList = [];
+
+	    // forward
 	    for (var i = 0; i < this.props.children.length; i++) {
 	      if (i >= this.props.initialSlide && i < this.props.initialSlide + this.props.slidesToShow) {
 	        lazyLoadedList.push(i);
 	      }
 	    }
+
+	    // backward
+	    var previous = this.props.initialSlide === 0 ? this.props.children.length - 1 : this.props.initialSlide - 1;
+	    lazyLoadedList.push(previous);
 
 	    if (this.props.lazyLoad && this.state.lazyLoadedList.length === 0) {
 	      this.setState({
@@ -1195,7 +1201,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    infinite: true,
 	    initialSlide: 0,
 	    lazyLoad: false,
-	    preload: 1,
 	    responsive: null,
 	    rtl: false,
 	    slide: 'div',
