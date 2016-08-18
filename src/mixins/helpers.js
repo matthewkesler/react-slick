@@ -16,7 +16,7 @@ var helpers = {
 
     this.setState({
       slideCount: slideCount,
-      slideWidth: slideWidth,
+      slideWidth: props.peek ? slideWidth - 30 : slideWidth,
       listWidth: listWidth,
       trackWidth: trackWidth,
       currentSlide: currentSlide
@@ -38,7 +38,7 @@ var helpers = {
   update: function (props, resizeEvent) {
   	if(!this.state.animating) {
 	    // This method has mostly same code as initialize method.
-	    // Refactor it 
+	    // Refactor it
 	    var slideCount = React.Children.count(props.children);
 	    var listWidth = this.getWidth(this.refs.list.getDOMNode());
 	    var trackWidth = this.getWidth(this.refs.track.getDOMNode());
@@ -46,7 +46,7 @@ var helpers = {
 
 	    this.setState({
 	      slideCount: slideCount,
-	      slideWidth: slideWidth,
+      	slideWidth: props.peek ? slideWidth - 30 : slideWidth,
 	      listWidth: listWidth,
 	      trackWidth: trackWidth
 	    }, function () {
@@ -60,7 +60,7 @@ var helpers = {
 
 	      this.setState({trackStyle: trackStyle});
 
-	      // Animate slider to initial slide passed as props 
+	      // Animate slider to initial slide passed as props
 	      if(!resizeEvent) {
 	      	this.slideHandler(props.initialSlide);
 	      }
@@ -177,15 +177,22 @@ var helpers = {
       var slidesToLoad = [];
       for (var i = targetSlide; i < targetSlide + this.props.slidesToShow; i++ ) {
         loaded = loaded && (this.state.lazyLoadedList.indexOf(i) >= 0);
-        if (!loaded) {
+        //if (!loaded) {
           slidesToLoad.push(i);
-        }
+          if(this.props.peek) {
+          	if(targetSlide === -1) { // backwards from start
+          		slidesToLoad.push(this.state.slideCount-2);
+          	} else { // any other swipe
+          		slidesToLoad.push(targetSlide > this.state.currentSlide ? i + 1 : i - 1);
+          	}
+          }
+        //}
       }
-      if (!loaded) {
+      //if (!loaded) {
         this.setState({
           lazyLoadedList: this.state.lazyLoadedList.concat(slidesToLoad)
         });
-      }
+      //}
     }
 
     // Slide Transition happens here.

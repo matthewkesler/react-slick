@@ -32,6 +32,9 @@ export var InnerSlider = React.createClass({
     for (var i = 0; i < this.props.children.length; i++) {
       if (i >= this.props.initialSlide && i < this.props.initialSlide + this.props.slidesToShow) {
         lazyLoadedList.push(i);
+        if(this.props.peek) {
+        		lazyLoadedList.push(i+1);
+        }
       }
     }
 
